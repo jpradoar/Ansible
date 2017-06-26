@@ -1,0 +1,22 @@
+---
+- hosts: all
+  remote_user: root
+  become: true
+  
+  vars:
+    user: jprado
+    password: jprado
+    bash: /bin/bash
+
+  tasks:
+
+  - name: create user
+    user: name={{user}} shell={{bash}} password={{password}}
+
+  roles:
+     - paquetes_basicos
+     - apache
+     - php
+     - mysql
+     - software
+     - crontab

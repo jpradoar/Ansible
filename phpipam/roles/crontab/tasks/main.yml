@@ -1,0 +1,14 @@
+---
+
+- cron:
+    name: Backup /var/www/html to /root/
+    weekday: 2
+    minute: 50
+    hour: 23
+    user: root
+    job: "tar -czf /root/backup_www_$(date +%Y-%m-%d).tar.gz /var/www/html"
+
+# Root crontab -e
+#
+# Ansible: Backup /var/www/html to /root/
+# 50 23 * * 2 tar -czf /root/backup_www_$(date +%Y-%m-%d).tar.gz /etc/dir1 /var/www/html

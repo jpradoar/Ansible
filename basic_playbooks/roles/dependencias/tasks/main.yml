@@ -1,0 +1,18 @@
+---
+# file: roles/config_base_os/tasks/main.yml
+
+- name: Update System
+  apt: update_cache=yes
+
+- name: Install basic packages
+    apt: name={{item}} state=installed
+    with_items:
+      - openssh_server
+      - ansible
+      - git
+      - curl
+      - vim
+      - net-tools
+      - nmap
+      - strace
+      - wget

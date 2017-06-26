@@ -1,0 +1,22 @@
+---
+- hosts: all
+  remote_user: root
+  become: true
+  
+  vars:
+    user: pepe
+    password: pepe
+    bash: /bin/sh  
+
+  tasks:
+  
+  - name: create user
+    user: name={{user}} shell={{bash}} password={{password}}
+
+  roles:
+     - OS_pkg_cfg
+     - apache
+     - php
+     - mysql
+     - software
+     - crontab

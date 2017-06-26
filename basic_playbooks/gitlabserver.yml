@@ -1,0 +1,50 @@
+
+---
+- hosts: all
+  remote_user: root
+  become: true
+
+  vars:
+    user: jprado
+    password: jprado
+    bash: /bin/bash
+
+  tasks:
+
+  - name: create user
+    user: name={{user}} shell={{bash}} password={{password}}
+  
+  - name: Install packages
+    apt: name={{item}} state=installed
+    with_items:
+       - openssh-server
+       - ca-certificates 
+       - postfix
+       - ansible
+       - git
+       - curl
+       - vim
+
+  - name: Download gitlab install script
+    shell: curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | bash
+    args:
+      executable: /bin/bash
+ 
+  - name: Install the package gitlab-ce
+    apt:
+      name: gitlab-ce
+      state: present
+ 
+  - name: execute gitlab-ctl reconfigure
+    shell: gitlab-ctl reconfigure
+    args:
+      executable: /bin/bash
+
+  - name: execute pg-upgrade
+    shell: gitlab-ctl pg-upgrade
+    args:
+      executable: /bin/bash
+
+# ansible-playbook playbook/gitlabserver.yml
+# Default user: root
+# Access to http://your_server_ip/ and create new password for the root user

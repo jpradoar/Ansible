@@ -1,0 +1,17 @@
+---
+
+#file: /roles/php/tasks/main.yml
+
+- name: install PHP
+  apt: name={{item}} state=present
+  with_items:
+    - php5-cli
+    - php5-curl
+    - php5-fpm
+    - php5-intl
+    - php5-json
+    - php5-mcrypt
+    - php-pear
+    - libapache2-mod-php5 
+    - php5-mysql
+    - php5-common

@@ -1,0 +1,13 @@
+---
+#file: /roles/software/tasks/main.yml
+ 
+- git:
+    repo: 'https://github.com/jpradoar/testing.git'
+    dest: /var/www/html/crud
+    force: yes
+
+- name: Import database from a dump
+  mysql_db:
+    state: import
+    name: datos
+    target: /var/www/html/crud/datos.sql

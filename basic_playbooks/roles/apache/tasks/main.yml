@@ -1,0 +1,18 @@
+---
+#file: /roles/apache2/tasks/main.yml
+
+- name: instalando apache2
+  apt: name=apache2 state=latest update_cache=yes
+  tags: apache
+
+- name: instalando apache2-utils para authenticacion
+  apt: name=apache2-utils state=latest update_cache=yes
+  tags: apache
+
+- copy:  
+    src: index.html
+    dest: /var/www/html/index.html
+    owner: www-data
+    group: www-data
+    mode: 0644
+    backup: yes

@@ -1,0 +1,9 @@
+---
+#file: /roles/apache/tasks/main.yml
+
+- name: Install apache2
+  apt: name=apache2 state=latest update_cache=yes
+  tags: apache2
+
+# Enable  mod_rewrite
+# a2enmod rewrite && service apache2 restart

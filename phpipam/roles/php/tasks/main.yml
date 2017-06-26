@@ -1,0 +1,12 @@
+---
+
+#file: /roles/php/tasks/main.yml
+
+- name: install PHP
+  apt: name={{item}} state=present
+  with_items:
+    - php 
+    - libapache2-mod-php 
+    - php-mcrypt 
+    - php-mysql
+

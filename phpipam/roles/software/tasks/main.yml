@@ -1,0 +1,34 @@
+---
+#file: /roles/software/tasks/main.yml
+ 
+- git:
+    repo: 'https://github.com/phpipam/phpipam.git'
+    dest: /var/www/html/phpipam/
+    force: yes
+
+- name: Import database from a dump
+  mysql_db:
+    state: import
+    name: phpipam
+    target: /tmp/phpipamdb.sql
+
+- copy:
+    src: files/config.php
+    dest: /var/www/html/phpipam/config.php
+    mode: 0740
+
+
+- name: a2enmod rewrite & service apache2 restart
+  shell: a2enmod rewrite; service apache2 restart
+
+
+- file: path=/var/www/html/phpipam/{{ item }} state=absent
+  with_items:
+       - .git/
+       - .gitattributes
+       - .gitignore
+       - .gitmodules
+       - README
+       - INSTALL.txt
+       - config.dist.php
+

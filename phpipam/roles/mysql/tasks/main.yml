@@ -1,0 +1,32 @@
+---
+
+#file: /roles/mysql/tasks/main.yml
+
+- name: Install mysql server and client
+  apt: name={{item}} state=present
+  with_items:
+    - mysql-server
+    - mysql-client
+    - python-mysqldb
+
+- name: Creating database phpipam
+  mysql_db:
+    name: phpipam
+    state: present
+
+- mysql_user: 
+    name: jprado
+    password: jprado
+    priv: '*.*:ALL'
+    state: present
+
+# Set the locale as Argentina
+- locale_gen:
+    name: es_AR.UTF-8
+    state: present  
+
+
+- copy:
+    src: files/phpipamdb.sql
+    dest: /tmp/phpipamdb.sql
+    mode: 0740

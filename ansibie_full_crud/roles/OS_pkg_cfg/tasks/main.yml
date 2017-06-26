@@ -1,0 +1,25 @@
+---
+
+#file: /roles/paquetes_basicos/tasks/main.yml
+
+- name: Run apt-get update
+  apt:
+    update_cache: yes
+
+
+- name: Install list of packages
+  apt: name={{item}} state=installed
+  with_items:
+       - vim
+       - git
+       - nmap
+       - curl
+       - wget
+       - strace
+       - net-tools
+       - unzip
+       - htop
+       - iotop
+       - iftop
+       - mlocate
+       - openssh-server 

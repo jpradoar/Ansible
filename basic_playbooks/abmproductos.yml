@@ -1,0 +1,69 @@
+# create a basic CRUD system,  using  apache2, php and mysql
+# you can use the command sed to change variables to your personal data.
+# example: 
+#   sed -i 's/_%_servername_%_/webserver01/g'
+#   sed -i 's/_%_URLremotegit_%_/https:\/\/github.com\/foo.git/g'
+# The Backbar " \ " in second sed is to exit the double bar "//" of https: // <--
+---
+- hosts: _%_servername_%_
+  vars:
+  remote_user: root
+  become: true
+  
+    user: jprado
+    password: jprado
+    bash: /bin/bash
+
+  tasks:
+
+  - name: create user
+    user: name={{user}} shell={{bash}} password={{password}}
+
+  - name: install packages
+    apt: name={{ item }} update_cache=yes state=latest
+    with_items:
+      - git
+      - apache2
+      - php5
+      - libapache2-mod-php5
+      - mysql-server
+      - php5-mysql
+      - python-mysqldb
+      - vim
+      
+  # I make sure there is nothing in the html /
+  - shell: /bin/rm -rf /var/www/html/*
+
+  - name: Cloning repo sistemaweb
+    git: >
+      dest=/var/www/html/
+      repo=_%_URLremotegit_%_
+      update=no
+      force=yes
+    register: cloned
+
+  # I make sure there delete .git
+  - shell: /bin/rm -rf /var/www/html/.git
+
+  - name: Creating database _%_database_%_
+    mysql_db:
+      name: _%_database_%_
+      state: present
+
+  - mysql_user:
+      name: _%_databaseuser_%_
+      password: _%_databasepass_%_
+      priv: '*.*:ALL'
+      state: present
+
+  - name: Import database from a dump
+    mysql_db:
+      state: import
+      name: _%_database_%_
+      target: /var/www/html/_%_database_%_.sql
+
+  # Set the locale as Argentina
+  - locale_gen:
+      name: es_AR.UTF-8
+      state: present
+     

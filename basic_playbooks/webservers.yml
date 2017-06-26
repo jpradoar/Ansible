@@ -1,0 +1,21 @@
+
+---
+- hosts: all
+  remote_user: root
+  become: true
+  
+  vars:
+    user: jprado
+    password: jprado
+    bash: /bin/bash
+
+  tasks:
+
+  - name: create user
+    user: name={{user}} shell={{bash}} password={{password}}
+    
+  roles:
+     - configs_os_base 
+     - ansible
+     - { role: apache, when: "ansible_os_family == 'Debian'" }
+     - dependencias

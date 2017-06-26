@@ -1,0 +1,5 @@
+---
+# file: roles/config_base_os/tasks/main.yml
+
+- name: actualizar el sistema
+  apt: update_cache=yes

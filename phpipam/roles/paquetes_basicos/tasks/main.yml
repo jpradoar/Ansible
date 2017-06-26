@@ -1,0 +1,19 @@
+---
+
+#file: /roles/paquetes_basicos/tasks/main.yml
+
+- name: Update system
+  apt:
+    update_cache: yes
+
+
+- name: Install list of packages
+  apt: name={{item}} state=installed
+  with_items:
+       - vim
+       - apache2
+       - git
+       - python3-mysqldb
+
+#- hostname:
+#    name: phpipam

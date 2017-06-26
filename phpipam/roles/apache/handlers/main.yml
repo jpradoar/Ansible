@@ -1,0 +1,9 @@
+---
+#file: /roles/apache/handlers/main.yml
+
+- name: enabled mod_rewrite
+  apache2_module: name=rewrite state=present
+
+
+- name: restart apache
+  service: name=apache2 state=restarted

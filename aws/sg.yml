@@ -1,0 +1,44 @@
+---
+  - name: Provision an EC2 Instance
+    hosts: local
+    connection: local
+    gather_facts: False
+    tags: provisioning
+    
+    vars:
+      security_group: SG-Ansible
+      sg_desc: security Group created by Ansible
+      region: us-east-1 
+      aws_access_key: ACCESS_KEY
+      aws_secret_key: SECRET_KEY
+
+    tasks:
+
+      - name: Create AWS Security Group
+        local_action: 
+          module: ec2_group
+          name: "{{ security_group }}"
+          description: "{{ sg_desc }}"
+          region: "{{ region }}"
+          aws_access_key: "{{ aws_access_key }}"
+          aws_secret_key: "{{ aws_secret_key }}"
+          rules:
+            - proto: tcp
+              from_port: 22
+              to_port: 22
+              cidr_ip: 0.0.0.0/0
+
+            - proto: tcp
+              from_port: 80
+              to_port: 80
+              cidr_ip: 0.0.0.0/0
+
+            - proto: tcp
+              from_port: 443
+              to_port: 443
+              cidr_ip: 0.0.0.0/0
+              
+          rules_egress:
+            - proto: all
+              cidr_ip: 0.0.0.0/0
+        register: basic_firewall
