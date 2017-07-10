@@ -1,0 +1,39 @@
+---
+- hosts: all
+  remote_user: root
+  become: true
+  
+
+  tasks:
+
+  - name: Download logstash 5.5.0
+    get_url:
+      url: https://artifacts.elastic.co/downloads/logstash/logstash-5.5.0.deb
+      dest: /tmp/logstash-5.5.0.deb
+      mode: 0755
+
+  - apt_repository:
+      repo: 'ppa:openjdk-r/ppa'
+      codename: 'trusty'
+      # add-apt-repository ppa:openjdk-r/ppa
+
+  - name: run apt-get update
+    apt:
+      update_cache: yes
+
+  - name: install packages
+    apt: name={{item}} state=present
+    with_items:
+      - nmap
+      - vim
+      - curl
+      - wget
+      - net-tools
+      - mlocate
+      - telnet
+      - openjdk-8-jdk
+      - apache2
+
+  - name: Install logstash package
+    apt:
+     deb: /tmp/logstash-5.5.0.deb 
